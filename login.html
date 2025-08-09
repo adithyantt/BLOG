@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NoCap Press - Login</title>
+  <link rel="stylesheet" href="login.css" />
+  <style>
+    #admin-code-box {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #error {
+      color: red;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-content">
+    <!-- Logo and Heading -->
+    <div class="form-header">
+      <div class="logo">
+        <img src="logo.jpg" alt="Blog Logo" />
+      </div>
+      <h2>NoCap Press</h2>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error"></div>
+
+    <!-- Login Form -->
+    <form method="POST" action="login.php" onsubmit="return validateLogin()">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="role">Select Role</label>
+      <select name="role" id="role" required onchange="toggleAdminCode()">
+        <option value="">Select Role</option>
+        <option value="User">User</option>
+        <option value="Admin">Admin</option>
+      </select>
+
+      <!-- Admin Code Input (Hidden by Default) -->
+      <div id="admin-code-box">
+        <label for="admin_code">Admin Code</label>
+        <input type="text" id="admin_code" name="admin_code" placeholder="Enter Admin Code" />
+      </div>
+
+      <label for="password">Password</label>
+      <div class="password-container">
+        <input type="password" id="password" name="pwd" placeholder="Enter your password" required />
+        <span class="toggle" onclick="togglePassword()">Show</span>
+      </div>
+
+      <button type="submit" name="submit">Login</button>
+
+      <p class="message">Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </form>
+  </div>
+
+  <!-- JS Scripts -->
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.querySelector(".toggle");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "Hide";
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "Show";
+      }
+    }
+
+    function toggleAdminCode() {
+      const role = document.getElementById("role").value;
+      const adminCodeBox = document.getElementById("admin-code-box");
+      adminCodeBox.style.display = (role === "Admin") ? "block" : "none";
+    }
+
+    function validateLogin() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+      const adminCode = document.getElementById("admin_code").value.trim();
+      const errorDiv = document.getElementById("error");
+
+      errorDiv.textContent = "";
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+
+      if (!email || !password || !role) {
+        errorDiv.textContent = "All fields are required.";
+        return false;
+      }
+
+      if (!emailPattern.test(email)) {
+        errorDiv.textContent = "Please enter a valid email.";
+        return false;
+      }
+
+      if (password.length < 6) {
+        errorDiv.textContent = "Password must be at least 6 characters.";
+        return false;
+      }
+
+      if (role === "Admin" && adminCode === "") {
+        errorDiv.textContent = "Admin code is required.";
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+</body>
+</html>

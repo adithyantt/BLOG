@@ -1,0 +1,11 @@
+/* You can reuse the same style as create */
+@import url('create.css');
+
+/* Optional tweak for "Update" button */
+button {
+  background: #28a745;
+}
+
+button:hover {
+  background: #1e7e34;
+}

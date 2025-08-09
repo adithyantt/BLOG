@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NoCap Press - Sign Up</title>
+  <link rel="stylesheet" href="login.css" />
+  <style>
+    #admin-code-box {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #error {
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <!-- Logo and Heading -->
+    <div class="form-header">
+      <div class="logo">
+        <img src="Logo.jpg" alt="Blog Logo" />
+      </div>
+      <h2>Create Account - NoCap Press</h2>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error"></div>
+
+    <!-- Registration Form -->
+    <form method="POST" action="signup.php" onsubmit="return validateRegister()">
+      <label for="u_name">Full Name</label>
+      <input type="text" id="u_name" name="uname" placeholder="Enter your name" required />
+
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required />
+
+      <label for="role">Select Role</label>
+      <select name="role" id="role" required onchange="toggleAdminCode()">
+        <option value="">Select Role</option>
+        <option value="User">User</option>
+        <option value="Admin">Admin</option>
+      </select>
+
+      <!-- Admin Code Field -->
+      <div id="admin-code-box">
+        <label for="admin_code">Admin Code</label>
+        <input type="text" id="admin_code" name="admin_code" placeholder="Enter Admin Code" />
+      </div>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="pwd" placeholder="Enter password" required />
+
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required />
+
+      <button type="submit" name="submit">Sign Up</button>
+
+      <p class="message">Already have an account? <a href="login.html">Login</a></p>
+    </form>
+  </div>
+
+  <script>
+    // Toggle Admin Code Box
+    function toggleAdminCode() {
+      const role = document.getElementById("role").value;
+      const adminCodeBox = document.getElementById("admin-code-box");
+      adminCodeBox.style.display = role === "Admin" ? "block" : "none";
+    }
+
+    // Validate Form Input
+    function validateRegister() {
+      const uName = document.getElementById("u_name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const role = document.getElementById("role").value;
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirm_password").value.trim();
+      const adminCode = document.getElementById("admin_code").value.trim();
+      const errorDiv = document.getElementById("error");
+
+      errorDiv.textContent = "";
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+      if (!uname || !email || !phone || !role || !password || !confirmPassword) {
+        errorDiv.textContent = "All fields are required.";
+        return false;
+      }
+
+      if (!emailPattern.test(email)) {
+        errorDiv.textContent = "Please enter a valid email.";
+        return false;
+      }
+
+      if (password.length < 6) {
+        errorDiv.textContent = "Password must be at least 6 characters.";
+        return false;
+      }
+
+      if (password !== confirmPassword) {
+        errorDiv.textContent = "Passwords do not match.";
+        return false;
+      }
+
+      if (role === "Admin" && adminCode === "") {
+        errorDiv.textContent = "Admin code is required.";
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+</body>
+</html>
