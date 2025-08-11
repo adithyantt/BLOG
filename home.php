@@ -3,7 +3,7 @@ include "config.php";
 session_start();
 
 if (!isset($_SESSION['email'])) {
-    header("Location: login.html");
+   header("Location: login.html");
     exit();
 }
 
@@ -21,6 +21,7 @@ $email = $_SESSION['email'];
     .spa-section.active { display: block; }
     .bottom-nav a.active { color: red; font-weight: bold; }
 
+    /* Post styling */
     .post-card {
       background: #fff;
       border: 1px solid #ccc;
@@ -36,12 +37,16 @@ $email = $_SESSION['email'];
       text-decoration: none;
       color: #007BFF;
     }
+
+    /* Header */
     header.top-header {
       background: #111; color: #fff;
       padding: 10px 20px;
       display: flex;
       justify-content: space-between;
     }
+
+    /* Bottom navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -56,6 +61,27 @@ $email = $_SESSION['email'];
       text-decoration: none;
       color: #333;
     }
+
+    /* Top tab navigation inside home */
+    .home-tabs {
+      display: flex;
+      background: #f2f2f2;
+      padding: 8px;
+    }
+    .home-tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .home-tabs button.active {
+      font-weight: bold;
+      border-bottom: 2px solid black;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
@@ -68,10 +94,21 @@ $email = $_SESSION['email'];
 
 <!-- HOME Section -->
 <section id="home-section" class="spa-section active">
-  <main class="content">
-    <h2>All Blog Posts</h2><hr>
+  <!-- Top Tabs -->
+  <div class="home-tabs">
+    <button class="tab-btn active" data-tab="for-you-tab">For You</button>
+    <button class="tab-btn" data-tab="following-tab">Following</button>
+    <button class="tab-btn" data-tab="category-tab">Category</button>
+  </div>
+
+  <!-- Tab Content -->
+  <div id="for-you-tab" class="tab-content active">
+    <h2>For You</h2><hr>
     <?php
-    $query = "SELECT p.*, c.email FROM posts p JOIN credentials c ON p.user_id = c.user_id ORDER BY p.created_at DESC";
+    $query = "SELECT p.*, c.email 
+              FROM posts p 
+              JOIN credentials c ON p.user_id = c.user_id 
+              ORDER BY p.created_at DESC";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) > 0) {
@@ -92,38 +129,74 @@ $email = $_SESSION['email'];
         echo "<p>No blog posts found.</p>";
     }
     ?>
-  </main>
+  </div>
+
+  <div id="following-tab" class="tab-content">
+    <h2>Following</h2>
+    <p>[Show posts from authors you follow here]</p>
+  </div>
+
+  <div id="category-tab" class="tab-content">
+    <h2>Category</h2>
+    <p>[Show posts by category here]</p>
+  </div>
 </section>
 
 <!-- SEARCH Section -->
 <section id="search-section" class="spa-section">
-<h2>Search Blog</h2>
-<form method="get" action="search.php">
-    <input type="text" name="q" placeholder="Enter keyword">
-    <input type="submit" value="Search">
-</form>
+  <h2>Search Blog</h2>
+  <form method="get" action="search.php">
+      <input type="text" name="q" placeholder="Enter keyword">
+      <input type="submit" value="Search">
+  </form>
 </section>
 
 <!-- CREATE Section -->
 <section id="create-section" class="spa-section">
-  <!-- <h2>Create Blog</h2>
-  <form method="POST" action="create_blog.php">
-    <input type="text" name="title" placeholder="Title" required /><br><br>
-    <textarea name="content" placeholder="Write your blog here..." rows="5" required></textarea><br><br>
-    <button type="submit">Publish</button>
-  </form> -->
   <h2>Create Blog Post</h2>
-<form method="post" action="create_blog.php">
-    Title:<br><input type="text" name="title" required><br><br>
-    Content:<br><textarea name="content" rows="6" cols="50" required></textarea><br><br>
-    <input type="submit" name="submit" value="Post">
-</form>
+  <form method="post" action="create_blog.php">
+      Title:<br><input type="text" name="title" required><br><br>
+      Content:<br><textarea name="content" rows="6" cols="50" required></textarea><br><br>
+      <input type="submit" name="submit" value="Post">
+  </form>
 </section>
 
 <!-- BOOKMARK Section -->
 <section id="bookmark-section" class="spa-section">
   <h2>Bookmarks</h2>
-  <p>[Display user bookmarks here]</p>
+  <hr>
+  <?php
+  $userQuery = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='" . mysqli_real_escape_string($conn, $email) . "'");
+  if ($userQuery && mysqli_num_rows($userQuery) > 0) {
+      $user = mysqli_fetch_assoc($userQuery);
+      $user_id = (int)$user['user_id'];
+
+      $bookmarkQuery = "
+        SELECT p.*, c.email 
+        FROM bookmarks b
+        JOIN posts p ON b.post_id = p.post_id
+        JOIN credentials c ON p.user_id = c.user_id
+        WHERE b.user_id = $user_id
+        ORDER BY b.bookmark_id DESC
+      ";
+      $bookmarkResult = mysqli_query($conn, $bookmarkQuery);
+
+      if ($bookmarkResult && mysqli_num_rows($bookmarkResult) > 0) {
+          while ($row = mysqli_fetch_assoc($bookmarkResult)) {
+              echo "<div class='post-card'>";
+              echo "<div class='post-meta'><strong>" . htmlspecialchars($row['email']) . "</strong> | " . htmlspecialchars($row['created_at']) . "</div>";
+              echo "<h3 class='post-title'>" . htmlspecialchars($row['title']) . "</h3>";
+              echo "<p class='post-excerpt'>" . nl2br(substr(htmlspecialchars($row['content']), 0, 100)) . "...</p>";
+              echo "<div class='actions'><a href='view.php?pid=" . $row['post_id'] . "'>View</a></div>";
+              echo "</div>";
+          }
+      } else {
+          echo "<p>No bookmarks yet.</p>";
+      }
+  } else {
+      echo "<p>Error: User not found.</p>";
+  }
+  ?>
 </section>
 
 <!-- PROFILE Section -->
@@ -143,6 +216,7 @@ $email = $_SESSION['email'];
 </nav>
 
 <script>
+  // Bottom Nav SPA
   const navLinks = document.querySelectorAll(".bottom-nav .nav-icon");
   const sections = document.querySelectorAll(".spa-section");
 
@@ -156,6 +230,20 @@ $email = $_SESSION['email'];
 
       navLinks.forEach(l => l.classList.remove("active"));
       link.classList.add("active");
+    });
+  });
+
+  // Top Tab Navigation for Home
+  const tabButtons = document.querySelectorAll(".home-tabs .tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach(b => b.classList.remove("active"));
+      tabContents.forEach(c => c.classList.remove("active"));
+
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.tab).classList.add("active");
     });
   });
 </script>
