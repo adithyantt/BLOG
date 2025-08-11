@@ -54,8 +54,8 @@ $is_following = mysqli_num_rows($follow_check) > 0;
         p { background: #fff; padding: 15px; border-radius: 5px; line-height: 1.6; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
         .top-actions { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         .top-actions button, .top-actions a { background: none; border: none; cursor: pointer; padding: 0; }
-        .follow-btn { padding: 5px 10px; border-radius: 5px; background: #007BFF; color: white; cursor: pointer; border: none; }
-        .follow-btn.unfollow { background: #6c757d; }
+        .follow-btn { padding: 5px 10px; border-radius: 5px; background:white; color: black; cursor: pointer; border: none; }
+        .follow-btn.unfollow { background: white; color:black; }
     </style>
     <script>
     // Predefined SVGs (clean, no PHP escaping needed)
