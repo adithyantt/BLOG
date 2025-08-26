@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 18, 2025 at 05:11 PM
+-- Generation Time: Aug 26, 2025 at 07:31 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,31 @@ CREATE TABLE `bookmarks` (
 --
 
 INSERT INTO `bookmarks` (`bookmark_id`, `user_id`, `post_id`, `created_at`) VALUES
-(13, 2, 13, '2025-08-12 15:10:01');
+(18, 9, 14, '2025-08-22 12:17:12'),
+(26, 8, 16, '2025-08-25 19:23:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `comment_id` int(10) UNSIGNED NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `comment` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`comment_id`, `post_id`, `user_id`, `comment`, `created_at`, `updated_at`) VALUES
+(1, 14, 9, 'tgg', '2025-08-22 12:37:11', NULL),
+(3, 14, 9, 'view', '2025-08-22 12:40:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -54,21 +78,18 @@ CREATE TABLE `credentials` (
   `phone` varchar(15) DEFAULT NULL,
   `role` enum('admin','user') DEFAULT 'user',
   `pwd` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `bio` text DEFAULT NULL,
+  `profile_img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `credentials`
 --
 
-INSERT INTO `credentials` (`user_id`, `uname`, `email`, `phone`, `role`, `pwd`, `created_at`) VALUES
-(1, 'adithyan', 'adithyantt00@gmail.com', '1234567890', 'user', 'adhi@123', '2025-08-08 01:12:59'),
-(2, 'Ajil Saji', 'ajilsaji0299@gmail.com', '9072808585', 'user', 'Ajil@123', '2025-08-11 15:32:06'),
-(3, 'Vaishnavi Namboori', 'vaishu3@gmail.com', '09072808585', 'user', 'Adhi@123', '2025-08-11 16:08:03'),
-(4, 'Vaishnavi Namboori', 'vaishu3@gmail.com', '09072808585', 'user', 'Vaish333', '2025-08-11 16:08:48'),
-(5, 'Vaishnavi Namboori', 'vaishu3@gmail.com', '09072808585', 'user', 'Vaish333', '2025-08-11 16:08:48'),
-(6, 'Shruthi Jadhav', 'sruthijadhav@gmail.com', '3454657687', 'user', 'Adhi123', '2025-08-11 16:10:13'),
-(7, 'Ajith Milk', 'milk12@gmail.com', '09072808585', 'user', 'Ajith333', '2025-08-11 16:15:54');
+INSERT INTO `credentials` (`user_id`, `uname`, `email`, `phone`, `role`, `pwd`, `created_at`, `bio`, `profile_img`) VALUES
+(8, 'adhi', 'adhi00@gmail.com', '792068', 'user', 'adhi@123', '2025-08-19 05:55:26', NULL, NULL),
+(9, 'anand', 'anand@gmail.com', '9056342178', 'user', 'Anand@123', '2025-08-22 06:30:02', 'i am a hero of this funda', 'uploads/profile/1756186038_WhatsApp Image 2025-08-25 at 19.54.33_23e44260.jpg');
 
 -- --------------------------------------------------------
 
@@ -88,9 +109,30 @@ CREATE TABLE `follows` (
 --
 
 INSERT INTO `follows` (`follow_id`, `follower_id`, `following_id`, `created_at`) VALUES
-(12, 1, 2, '2025-08-11 21:28:57'),
-(15, 7, 1, '2025-08-12 11:02:01'),
-(17, 2, 1, '2025-08-12 15:12:18');
+(38, 8, 9, '2025-08-24 17:32:21'),
+(42, 9, 8, '2025-08-25 22:47:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+CREATE TABLE `likes` (
+  `like_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`like_id`, `user_id`, `post_id`, `created_at`) VALUES
+(9, 8, 21, '2025-08-26 14:14:22'),
+(10, 8, 16, '2025-08-26 15:46:04'),
+(11, 9, 15, '2025-08-26 15:49:30');
 
 -- --------------------------------------------------------
 
@@ -105,17 +147,20 @@ CREATE TABLE `posts` (
   `content` text NOT NULL,
   `img_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `category` varchar(100) NOT NULL DEFAULT 'General'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `user_id`, `title`, `content`, `img_url`, `created_at`, `updated_at`) VALUES
-(9, 1, 'ajil', 'fafafag', NULL, '2025-08-11 15:56:03', '2025-08-11 15:56:03'),
-(12, 1, 'You’re Not Thinking Like an Architect — Here’s What You’re Missing', 'when I made the shift from “engineer” to “architect,” I realized that the problems I was solving had less to do with for loops and more to do with latency budgets, system coupling, and blast radius. I stopped asking, “How do I build this?” and started asking “What happens when it fails?”', NULL, '2025-08-12 09:14:41', '2025-08-12 09:14:41'),
-(13, 1, 'uu', 'hbh', NULL, '2025-08-12 09:39:34', '2025-08-12 09:39:34');
+INSERT INTO `posts` (`post_id`, `user_id`, `title`, `content`, `img_url`, `created_at`, `updated_at`, `category`) VALUES
+(14, 8, 'hiii', 'bniutgwinb', NULL, '2025-08-19 05:56:36', '2025-08-19 05:56:36', 'General'),
+(15, 9, 'yuiuewgyewgyg', 'hchchchjhjchiuciywvwviwhbiugivivuhiuchiuhbhcohwohiuiuh', NULL, '2025-08-24 10:47:28', '2025-08-24 10:47:28', 'General'),
+(16, 9, 'yuiuewgyewgyg', 'hchchchjhjchiuciywvwviwhbiugivivuhiuchiuhbhcohwohiuiuh', NULL, '2025-08-24 10:48:18', '2025-08-24 10:48:18', 'General'),
+(21, 9, 'ONE Piece BiZZAR WEEK Coming', 'ttjyjysytsygxgbbg', 'uploads/1756190085_zoro-kb2vrvklhvqve63x.jpg', '2025-08-26 06:34:45', '2025-08-26 06:34:45', 'Education'),
+(22, 9, 'yuiuewgyewgyg', 'jkjojoo', 'uploads/1756223326_R.jpg', '2025-08-26 15:48:46', '2025-08-26 15:48:46', 'Travel');
 
 --
 -- Indexes for dumped tables
@@ -128,6 +173,13 @@ ALTER TABLE `bookmarks`
   ADD PRIMARY KEY (`bookmark_id`),
   ADD UNIQUE KEY `unique_bookmark` (`user_id`,`post_id`),
   ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `fk_comment_post` (`post_id`);
 
 --
 -- Indexes for table `credentials`
@@ -144,6 +196,14 @@ ALTER TABLE `follows`
   ADD KEY `following_id` (`following_id`);
 
 --
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`like_id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`post_id`),
+  ADD KEY `fk_likes_post` (`post_id`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -158,25 +218,37 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `bookmarks`
 --
 ALTER TABLE `bookmarks`
-  MODIFY `bookmark_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `bookmark_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `credentials`
 --
 ALTER TABLE `credentials`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `follows`
 --
 ALTER TABLE `follows`
-  MODIFY `follow_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `follow_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -190,11 +262,24 @@ ALTER TABLE `bookmarks`
   ADD CONSTRAINT `bookmarks_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `fk_comment_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `follows`
 --
 ALTER TABLE `follows`
   ADD CONSTRAINT `follows_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `credentials` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `follows_ibfk_2` FOREIGN KEY (`following_id`) REFERENCES `credentials` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `fk_likes_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_likes_user` FOREIGN KEY (`user_id`) REFERENCES `credentials` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `posts`
@@ -206,3 +291,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
