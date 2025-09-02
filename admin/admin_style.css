@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background: #f4f6f9;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #111827;
+  color: #fff;
+  height: 100vh;
+  padding: 20px 0; /* reduced padding top */
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin: 0 10px;
+  transition: background 0.2s;
+}
+
+/* Highlight on hover */
+.sidebar ul li a:hover {
+  background: #2563eb;
+}
+
+/* Highlight active page */
+.sidebar ul li a.active {
+  background: #1d4ed8;
+  font-weight: bold;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 240px; /* match sidebar width */
+  padding: 40px 50px; /* more padding inside */
+  flex: 5;
+  max-width: calc(100% - 240px);
+}
+
+header h1 {
+  margin: 0 0 20px 0;
+}
+
+/* Stats Cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card span {
+  display: block;
+  font-size: 22px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Recent Sections */
+.recent {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.recent-box {
+  background: #fff;
+  flex: 1;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.recent-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recent-box table th,
+.recent-box table td {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
