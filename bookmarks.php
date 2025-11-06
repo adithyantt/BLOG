@@ -170,12 +170,15 @@ function fetchBookmarkedPosts($conn, $current_user_id, $email) {
 
 </head>
 <body>
+<!-- Top Header -->
 <div class="top-header">
-  <div class="site-title">NoCap Press</div>
-  <div class="user-info">
-    <img src="<?= $currentUserImg ?>" alt="Profile">
-    <span><?= $currentUserName ?></span>
-  </div>
+    <div class="brand-title">NoCapPress</div>
+    <div class="profile" style="display:flex;align-items:center;gap:8px;">
+        <span><?= $currentUserName ?></span>
+        <a href="profile.php">
+            <img src="<?= $currentUserImg ?>" alt="Profile" style="width:32px;height:32px;border-radius:50%;">
+        </a>
+    </div>
 </div>
 
 <!-- Sidebar -->
