@@ -4,27 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NoCap Press - Sign Up</title>
-  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="login.css" /> <!-- Uniform style for both pages -->
   <style>
-    #admin-code-box {
-      display: none;
-      margin-top: 10px;
-    }
-
+    /* Error style for immediate feedback */
     #error {
       color: red;
       margin-bottom: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <!-- Header Navigation -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo-text">NoCapPress</a>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="header-btn header-btn--home">Home</a>
+      <a href="login.html" class="header-btn header-btn--signup">Login</a>
+    </div>
+  </header>
+
   <div class="main-content">
     <!-- Logo and Heading -->
     <div class="form-header">
-      <div class="logo">
-        <img src="Logo.jpg" alt="Blog Logo" />
-      </div>
-      <h2>Create Account - NoCap Press</h2>
+      <h1>Write Your Thoughts, share it through NoCapPress.</h1>
     </div>
 
     <!-- Error Message -->
@@ -32,11 +37,12 @@
 
     <!-- Registration Form -->
     <form method="POST" action="signup.php" onsubmit="return validateRegister()">
+
       <label for="u_name">Full Name</label>
-      <input type="text" id="u_name" name="uname" placeholder="Enter your name" required />
+      <input type="text" id="u_name" name="uname" placeholder="Enter your name" required oninput="capitalizeName()" />
 
       <label for="email">Email</label>
-      <input type="text" id="email" name="email" placeholder="Enter your email" required />
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
 
       <label for="phone">Phone Number</label>
       <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required />
@@ -49,16 +55,22 @@
       </select>
 
       <!-- Admin Code Field -->
-      <div id="admin-code-box">
+      <div id="admin-code-box" style="display:none;">
         <label for="admin_code">Admin Code</label>
         <input type="text" id="admin_code" name="admin_code" placeholder="Enter Admin Code" />
       </div>
 
       <label for="password">Password</label>
-      <input type="password" id="password" name="pwd" placeholder="Enter password" required />
+      <div class="password-container">
+        <input type="password" id="password" name="pwd" placeholder="Enter password" required />
+        <span class="toggle" onclick="togglePassword()">Show</span>
+      </div>
 
       <label for="confirm_password">Confirm Password</label>
-      <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required />
+      <div class="password-container">
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required />
+        <span class="toggle" onclick="toggleConfirmPassword()">Show</span>
+      </div>
 
       <button type="submit" name="submit">Sign Up</button>
 
@@ -71,12 +83,51 @@
     function toggleAdminCode() {
       const role = document.getElementById("role").value;
       const adminCodeBox = document.getElementById("admin-code-box");
-      adminCodeBox.style.display = role === "Admin" ? "block" : "none";
+      if (role === "Admin") {
+        adminCodeBox.style.display = "block";
+        adminCodeBox.classList.add("show");
+      } else {
+        adminCodeBox.style.display = "none";
+        adminCodeBox.classList.remove("show");
+      }
+    }
+
+    // Capitalize first letter of name
+    function capitalizeName() {
+      let nameInput = document.getElementById("u_name");
+      if (nameInput.value.length > 0) {
+        nameInput.value = nameInput.value.charAt(0).toUpperCase() + nameInput.value.slice(1);
+      }
+    }
+
+    // Password show/hide toggles
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = passwordInput.nextElementSibling;
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "Hide";
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "Show";
+      }
+    }
+
+    function toggleConfirmPassword() {
+      const confirmInput = document.getElementById("confirm_password");
+      const toggleIcon = confirmInput.nextElementSibling;
+      if (confirmInput.type === "password") {
+        confirmInput.type = "text";
+        toggleIcon.textContent = "Hide";
+      } else {
+        confirmInput.type = "password";
+        toggleIcon.textContent = "Show";
+      }
     }
 
     // Validate Form Input
     function validateRegister() {
-      const uName = document.getElementById("u_name").value.trim();
+      const uname = document.getElementById("u_name").value.trim();
       const email = document.getElementById("email").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const role = document.getElementById("role").value;
@@ -87,7 +138,8 @@
 
       errorDiv.textContent = "";
 
-      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      const phonePattern = /^[0-9]{10}$/;
 
       if (!uname || !email || !phone || !role || !password || !confirmPassword) {
         errorDiv.textContent = "All fields are required.";
@@ -95,7 +147,12 @@
       }
 
       if (!emailPattern.test(email)) {
-        errorDiv.textContent = "Please enter a valid email.";
+        errorDiv.textContent = "Please enter a valid email address.";
+        return false;
+      }
+
+      if (!phonePattern.test(phone)) {
+        errorDiv.textContent = "Phone number must be exactly 10 digits.";
         return false;
       }
 
