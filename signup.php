@@ -1,43 +1,110 @@
 <?php
+session_start();
 include "config.php";
 
-if (isset($_POST['submit'])) {
+// Load PHPMailer
+require 'PHPMailer-6.10.0/src/Exception.php';
+require 'PHPMailer-6.10.0/src/PHPMailer.php';
+require 'PHPMailer-6.10.0/src/SMTP.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $uname = trim($_POST['uname']);
     $email = trim($_POST['email']);
-      $phone = $_POST['phone'];
-    $role = $_POST['role'];
-    $pwd = $_POST['pwd'];
+    $phone = trim($_POST['phone']);
+    $role  = strtolower(trim($_POST['role']));
+    $pwd   = $_POST['pwd'];
     $confirm_pwd = $_POST['confirm_password'];
+    $admin_code  = isset($_POST['admin_code']) ? trim($_POST['admin_code']) : '';
 
-    // ✅ Basic validations
-    if (empty($uname) || empty($email) || empty($role)  || empty($pwd) || empty($confirm_pwd)) {
-        echo "Please fill in all fields.";
-        exit();
+    // --- Basic validation ---
+    if (empty($uname) || empty($email) || empty($phone) || empty($role) || empty($pwd) || empty($confirm_pwd)) {
+        die("Please fill in all fields.");
     }
-
     if ($pwd !== $confirm_pwd) {
-        echo "Passwords do not match.";
+        die("Passwords do not match.");
+    }
+
+    // --- Admin code check ---
+    $correct_admin_code = "SECRET123";
+    if ($role === 'admin' && $admin_code !== $correct_admin_code) {
+        die("Invalid admin code.");
+    }
+
+    // --- Check if email already exists ---
+    $stmt = mysqli_prepare($conn, "SELECT * FROM credentials WHERE email=?");
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) > 0) {
+        echo "<script>alert('Email already registered.'); window.location.href='signup.html';</script>";
         exit();
     }
 
-    // ✅ Check if email already exists
- //   $check = mysqli_query($conn, "SELECT * FROM login WHERE email = '$email'");
- // if (mysqli_num_rows($check) > 0) {
-   // echo "<script>
-   //     alert('Email already registered. Please use a different one.');
-  //      window.location.href = 'signup.html';
-//</script>";
- //   exit();
+    // --- Hash password ---
+    $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
 
+    // --- Insert new user with status='pending' ---
+    $status = 'pending';
+    $stmt = mysqli_prepare($conn, "INSERT INTO credentials (uname,email,phone,role,pwd,status) VALUES (?,?,?,?,?,?)");
+    mysqli_stmt_bind_param($stmt, "ssssss", $uname, $email, $phone, $role, $hashed_pwd, $status);
+    if (!mysqli_stmt_execute($stmt)) {
+        die("Error inserting user: " . mysqli_error($conn));
+    }
 
+    // --- Generate OTP (6 digits) ---
+    $otp = rand(100000, 999999);
+    $expires = date("Y-m-d H:i:s", strtotime("+2 minutes"));
 
-    // ✅ Insert user (you can hash password if needed)
-    $sql = "INSERT INTO credentials (uname, email,phone, role, pwd) VALUES ('$uname', '$email','$phone','$role', '$pwd')";
-    if (mysqli_query($conn, $sql)) {
-        header("Location: home.php");
+    // --- Save OTP in DB ---
+    $stmt = mysqli_prepare($conn, "UPDATE credentials SET otp_code=?, otp_expires=? WHERE email=?");
+    mysqli_stmt_bind_param($stmt, "sss", $otp, $expires, $email);
+    mysqli_stmt_execute($stmt);
+
+    // --- Send OTP email ---
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'vivekkrishna960@gmail.com'; // sender
+        $mail->Password   = 'vspsxiaiqtoefxgb';          // app password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        // Disable SSL verification for localhost
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer'       => false,
+                'verify_peer_name'  => false,
+                'allow_self_signed' => true
+            ]
+        ];
+
+        $mail->setFrom('vivekkrishna960@gmail.com', 'NoCapPress');
+        $mail->addAddress($email, $uname);
+        $mail->isHTML(true);
+        $mail->Subject = 'Your OTP for NoCapPress';
+        $mail->Body    = "Hello $uname,<br>Your OTP is <b>$otp</b>. It expires in <b>2 minutes</b>.";
+
+        $mail->send();
+
+        // --- Save session for OTP verification ---
+        $_SESSION['pending_email'] = $email;
+        $_SESSION['pending_role']  = $role;
+        $_SESSION['otp_expires']   = strtotime($expires);
+        $_SESSION['new_user_signup'] = true; // <-- flag new user
+
+        // --- Redirect to verify OTP ---
+        header("Location: verify_otp.php");
         exit();
-    } else {
-        echo "Signup failed: " . mysqli_error($conn);
+
+    } catch (Exception $e) {
+        echo "OTP could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        exit();
     }
 }
 ?>
