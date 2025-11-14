@@ -1,0 +1,81 @@
+<?php
+include "config.php";
+session_start();
+
+if (!isset($_SESSION['email'])) {
+    header("Location: login.html");
+    exit();
+}
+?>
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Search Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 6px;
+            width: 250px;
+        }
+        input[type="submit"] {
+            padding: 6px 12px;
+        }
+        .result {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Search Blog</h2>
+
+<form method="get">
+    <input type="text" name="q" placeholder="Enter keyword" required>
+    <input type="submit" value="Search">
+</form> -->
+
+<?php
+if (isset($_GET['q'])) {
+    $q = $_GET['q'];
+
+    $query = "SELECT * FROM posts WHERE title LIKE '%$q%' OR content LIKE '%$q%'";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<p>
+         <a href='view.php?pid=" . $row['post_id'] . "'>" . htmlspecialchars($row['title']) . "</a>
+
+        </p>";
+    }
+} else {
+    echo "<p>No results found.</p>";
+}
+
+}
+?>
+
+<!-- </body>
+</html> -->
