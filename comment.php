@@ -1,4 +1,5 @@
 <?php
+//This file include the commenting by user
 include "config.php";
 session_start();
 header('Content-Type: application/json');
