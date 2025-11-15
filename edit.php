@@ -1,4 +1,5 @@
 <?php
+//this is my edit file for editing this blog
 include "config.php";
 session_start();
 
@@ -69,3 +70,4 @@ if (isset($_POST['update'])) {
 
 </body>
 </html>
+
