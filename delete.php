@@ -1,4 +1,5 @@
 <?php
+//this is the delete file for deleting the file
 include "config.php";
 session_start();
 
@@ -22,3 +23,4 @@ if (mysqli_query($conn, $sql)) {
     echo "Delete failed.";
 }
 ?>
+
