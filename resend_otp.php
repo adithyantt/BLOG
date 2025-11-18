@@ -17,7 +17,7 @@ if (!isset($_SESSION['pending_email'])) {
 }
 
 $email = $_SESSION['pending_email'];
-$role  = $_SESSION['pending_role'];
+$role  = isset($_SESSION['pending_role']) ? $_SESSION['pending_role'] : ""; // SAFETY FIX
 
 // Fetch user info
 $stmt = mysqli_prepare($conn, "SELECT uname FROM credentials WHERE email=? LIMIT 1");
@@ -26,7 +26,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 if ($row = mysqli_fetch_assoc($result)) {
-    $uname = $row['uname'];
+    $uname = isset($row['uname']) ? $row['uname'] : ''; // SAFETY FIX
 
     // Generate new OTP
     $otp = rand(100000, 999999);
