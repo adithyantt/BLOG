@@ -19,6 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_pwd = $_POST['confirm_password'];
     $admin_code  = isset($_POST['admin_code']) ? trim($_POST['admin_code']) : '';
 
+    // Store signup data for editing email later
+    $_SESSION['signup_data'] = [
+    "uname" => $uname,
+    "email" => $email,
+    "phone" => $phone,
+    "role"  => $role
+];
+
     // --- Basic validation ---
     if (empty($uname) || empty($email) || empty($phone) || empty($role) || empty($pwd) || empty($confirm_pwd)) {
         die("Please fill in all fields.");
@@ -26,6 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($pwd !== $confirm_pwd) {
         die("Passwords do not match.");
     }
+    // Strong password validation (letter + number + special char, min 6 chars)
+    if (!preg_match('/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $pwd)) {
+        die("Password must be at least 6 characters and include one letter, one number, and one special character.");
+    }
+
 
     // --- Admin code check ---
     $correct_admin_code = "SECRET123";
