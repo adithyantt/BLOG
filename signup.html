@@ -155,11 +155,15 @@
         errorDiv.textContent = "Phone number must be exactly 10 digits.";
         return false;
       }
+      // Strong password pattern: at least one letter, one number, one special char, min 6 chars
+      const strongPasswordPattern = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
 
-      if (password.length < 6) {
-        errorDiv.textContent = "Password must be at least 6 characters.";
-        return false;
+      if (!strongPasswordPattern.test(password)) {
+      errorDiv.textContent = 
+      "Password must be at least 6 characters and include at least one letter, one number, and one special character.";
+      return false;
       }
+
 
       if (password !== confirmPassword) {
         errorDiv.textContent = "Passwords do not match.";
@@ -173,6 +177,42 @@
 
       return true;
     }
+   // --- Autofill form from URL parameters (safe & normalized) ---
+(function fillFromUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params) return;
+
+  function safeSet(id, value, maxLen = 150) {
+    if (!value) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = String(value).trim().slice(0, maxLen);
+  }
+
+  const name = params.get('name');
+  const email = params.get('email');
+  const phone = params.get('phone');
+  const role = params.get('role');
+
+  safeSet('u_name', name, 100);
+  safeSet('email', email, 200);
+  safeSet('phone', phone, 20);
+
+  if (role) {
+    // convert 'admin' or 'user' to 'Admin' / 'User' to match <option>
+    const normalized = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+    const roleEl = document.getElementById('role');
+
+    if (roleEl) {
+      const exists = Array.from(roleEl.options).some(opt => opt.value === normalized);
+      if (exists) {
+        roleEl.value = normalized;
+        toggleAdminCode(); // ensures admin code box appears
+      }
+    }
+  }
+})();
+
   </script>
 </body>
 </html>
