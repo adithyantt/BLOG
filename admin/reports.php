@@ -14,8 +14,10 @@ $sql = "
            u.uname AS reporter_name,
            ru.uname AS reported_user,
            p.title AS post_title,
-           c.comment AS comment_text,
+           p.post_id AS post_id,
            p.status AS post_status,
+           p.content AS post_content,
+           c.comment AS comment_text,
            c.status AS comment_status,
            ru.status AS account_status
     FROM reports r
@@ -102,7 +104,6 @@ td {
 
 .warn { background-color: #f59e0b; }
 .suspend { background-color: #ef4444; }
-.unsuspend { background-color: #22c55e; }
 .dismiss { background-color: #6b7280; }
 
 .action-btn:hover { opacity: 0.9; transform: scale(1.02); }
@@ -155,10 +156,8 @@ textarea.admin-note {
 }
 textarea.admin-note:focus { border-color: #2563eb; }
 
-/* ===== SMALL TEXT ===== */
 .small { font-size: 12px; color: #6b7280; }
 
-/* ===== NO DATA ===== */
 .no-data {
     text-align: center;
     color: #888;
@@ -169,6 +168,7 @@ textarea.admin-note:focus { border-color: #2563eb; }
 </head>
 <body>
 <div class="admin-container">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <h2>NoCapPress Admin</h2>
@@ -178,7 +178,6 @@ textarea.admin-note:focus { border-color: #2563eb; }
       <li><a href="manage_posts.php">📝 Manage Posts</a></li>
       <li><a href="reports.php" class="active">⚠️ Reports</a></li>
       <li><a href="#" onclick="confirmLogout(event)">🚪 Logout</a></li>
-
     </ul>
   </aside>
 
@@ -199,59 +198,93 @@ textarea.admin-note:focus { border-color: #2563eb; }
         </tr>
       </thead>
       <tbody>
-        <?php if ($reports && mysqli_num_rows($reports) > 0): ?>
-            <?php while ($r = mysqli_fetch_assoc($reports)): ?>
-                <tr id="report-<?php echo $r['report_id']; ?>">
-                    <td>#<?php echo $r['report_id']; ?><br><span class="small"><?php echo $r['created_at']; ?></span></td>
-                    <td><?php echo htmlspecialchars($r['reporter_name']); ?></td>
-                    <td><?php echo htmlspecialchars($r['reported_user'] ?? '—'); ?><br>
-                        <span class="small">Status: <?php echo $r['account_status'] ?? 'active'; ?></span>
-                    </td>
-                    <td>
-                        <?php if ($r['post_title']): ?>
-                            <strong>Post:</strong> <?php echo htmlspecialchars($r['post_title']); ?>
-                            <span class="meta-badge"><?php echo $r['post_status'] ?? 'active'; ?></span>
-                            <button class="toggle-btn" onclick="toggleDetails(<?php echo $r['report_id']; ?>)">View</button>
-                            <div id="details-<?php echo $r['report_id']; ?>" class="details">
-                                <?php echo nl2br(htmlspecialchars($r['post_content'] ?? '')); ?>
-                            </div>
-                        <?php elseif ($r['comment_text']): ?>
-                            <strong>Comment:</strong>
-                            <span class="meta-badge"><?php echo $r['comment_status'] ?? 'active'; ?></span>
-                            <button class="toggle-btn" onclick="toggleDetails(<?php echo $r['report_id']; ?>)">View</button>
-                            <div id="details-<?php echo $r['report_id']; ?>" class="details">
-                                <?php echo nl2br(htmlspecialchars($r['comment_text'])); ?>
-                            </div>
-                        <?php else: ?>
-                            Account Report
-                        <?php endif; ?>
-                    </td>
-                    <td><?php echo htmlspecialchars($r['reason']); ?></td>
-                    <td id="row-status-<?php echo $r['report_id']; ?>">
-                        <?php if ($r['status'] === 'pending'): ?>
-                            <span class="status-pending">Pending</span>
-                        <?php else: ?>
-                            <span class="status-reviewed">Reviewed</span>
-                        <?php endif; ?>
-                    </td>
-                    <td id="actions-<?php echo $r['report_id']; ?>">
-                        <?php if ($r['status'] === 'pending'): ?>
-                            <textarea id="note-<?php echo $r['report_id']; ?>" class="admin-note" placeholder="Add admin note..."></textarea>
-                            <div class="action-container">
-                                <button class="action-btn warn" onclick="takeAction(<?php echo $r['report_id']; ?>, 'warn')">Warn</button>
-                                <button class="action-btn suspend" onclick="takeAction(<?php echo $r['report_id']; ?>, 'suspend')">Suspend</button>
-                                <button class="action-btn dismiss" onclick="takeAction(<?php echo $r['report_id']; ?>, 'dismiss')">Dismiss</button>
-                            </div>
-                        <?php else: ?>
-                            <div><strong>Action:</strong> <?php echo htmlspecialchars($r['admin_action'] ?? '-'); ?><br>
-                            <strong>Note:</strong> <?php echo htmlspecialchars($r['admin_note'] ?? '-'); ?></div>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <tr><td colspan="7" class="no-data">No reports found.</td></tr>
-        <?php endif; ?>
+
+<?php if ($reports && mysqli_num_rows($reports) > 0): ?>
+<?php while ($r = mysqli_fetch_assoc($reports)): ?>
+    <tr id="report-<?php echo $r['report_id']; ?>">
+
+        <td>#<?php echo $r['report_id']; ?><br>
+            <span class="small"><?php echo $r['created_at']; ?></span>
+        </td>
+
+        <td><?php echo htmlspecialchars($r['reporter_name']); ?></td>
+
+        <td><?php echo htmlspecialchars($r['reported_user'] ?? '—'); ?><br>
+            <span class="small">Status: <?php echo $r['account_status'] ?? 'active'; ?></span>
+        </td>
+
+        <td>
+            <?php if ($r['post_title']): ?>
+                <strong>Post:</strong> <?php echo htmlspecialchars($r['post_title']); ?>
+                <span class="meta-badge"><?php echo $r['post_status'] ?? 'active'; ?></span>
+
+                <button class="toggle-btn" onclick="toggleDetails(<?php echo $r['report_id']; ?>)">View</button>
+                <div id="details-<?php echo $r['report_id']; ?>" class="details">
+                    <?php echo nl2br(htmlspecialchars($r['post_content'] ?? '')); ?>
+                </div>
+
+            <?php elseif ($r['comment_text']): ?>
+                <strong>Comment:</strong>
+                <span class="meta-badge"><?php echo $r['comment_status'] ?? 'active'; ?></span>
+
+                <button class="toggle-btn" onclick="toggleDetails(<?php echo $r['report_id']; ?>)">View</button>
+                <div id="details-<?php echo $r['report_id']; ?>" class="details">
+                    <?php echo nl2br(htmlspecialchars($r['comment_text'])); ?>
+                </div>
+
+            <?php else: ?>
+                Account Report
+            <?php endif; ?>
+        </td>
+
+        <td><?php echo htmlspecialchars($r['reason']); ?></td>
+
+        <td>
+            <?php if ($r['status'] === 'pending'): ?>
+                <span class="status-pending">Pending</span>
+            <?php else: ?>
+                <span class="status-reviewed">Reviewed</span>
+            <?php endif; ?>
+        </td>
+
+        <td>
+            <?php if ($r['status'] === 'pending'): ?>
+
+               <div class="action-container">
+
+    <!-- Warn -->
+    <a class="action-btn warn"
+       href="handle_report_action.php?pid=<?php echo $r['reported_post_id']; ?>&rid=<?php echo $r['report_id']; ?>&action=warn">
+       Warn
+    </a>
+
+    <!-- Suspend -->
+    <a class="action-btn suspend"
+       href="handle_report_action.php?pid=<?php echo $r['reported_post_id']; ?>&rid=<?php echo $r['report_id']; ?>&action=suspend">
+       Suspend
+    </a>
+
+    <!-- Dismiss -->
+    <a class="action-btn dismiss"
+       href="handle_report_action.php?pid=<?php echo $r['reported_post_id']; ?>&rid=<?php echo $r['report_id']; ?>&action=dismiss">
+       Dismiss
+    </a>
+
+</div>
+
+
+            <?php else: ?>
+                <strong>Action:</strong> <?php echo htmlspecialchars($r['admin_action'] ?? '-'); ?><br>
+                <strong>Note:</strong> <?php echo htmlspecialchars($r['admin_note'] ?? '-'); ?>
+            <?php endif; ?>
+        </td>
+
+    </tr>
+<?php endwhile; ?>
+<?php else: ?>
+    <tr><td colspan="7" class="no-data">No reports found.</td></tr>
+<?php endif; ?>
+
       </tbody>
     </table>
   </main>
@@ -262,12 +295,9 @@ function toggleDetails(id) {
   const el = document.getElementById('details-' + id);
   if (el) el.style.display = (el.style.display === 'block') ? 'none' : 'block';
 }
-function takeAction(id, action) {
-  alert("Action '" + action + "' triggered for Report #" + id + ". (AJAX handling same as manage_posts)");
-}
 
 function confirmLogout(e) {
-  e.preventDefault(); // prevent immediate logout
+  e.preventDefault();
   if (confirm("Are you sure you want to log out of the admin panel?")) {
     window.location.href = "../logout.php";
   }
