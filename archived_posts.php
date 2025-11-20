@@ -6,6 +6,7 @@ if (!isset($_SESSION['email'])) {
     header("Location: login.html");
     exit();
 }
+this is the archived post
 
 $email = $_SESSION['email'];
 
