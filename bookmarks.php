@@ -1,7 +1,7 @@
 <?php
 include "config.php";
 session_start();
-
+//this is a bookmark file
 if (!isset($_SESSION['email'])) {
     header("Location: login.html");
     exit();
