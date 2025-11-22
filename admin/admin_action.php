@@ -7,6 +7,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     echo json_encode(["success" => false, "msg" => "Unauthorized"]);
     exit();
 }
+//admin action
 
 // ✅ Parse incoming request
 $data = json_decode(file_get_contents("php://input"), true);
