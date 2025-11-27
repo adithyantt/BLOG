@@ -76,3 +76,4 @@ $posts = mysqli_query($conn, $sql);
 
 </body>
 </html>
+//this is the archived post file for the my blog website and it is very useful
