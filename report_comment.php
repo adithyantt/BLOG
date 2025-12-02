@@ -59,3 +59,4 @@ if($insert){
     echo json_encode(["success"=>false, "msg"=>"Failed to report comment"]);
 }
 ?>
+//this is code
