@@ -44,3 +44,4 @@ if (isset($_POST['id']) && isset($_POST['type'])) {
 } else {
     echo json_encode(["success" => false, "message" => "Missing parameters"]);
 }
+//this is toggle suspension file
