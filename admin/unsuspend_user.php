@@ -14,5 +14,4 @@ if (isset($_GET['id'])) {
 
 header("Location: manage_users.php");
 exit();
-//this is unsuspend user file
 ?>
