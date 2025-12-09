@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     header("Location: ../login.php");
     exit();
 }
-//admin dashboard 
+
 
 // Fetch stats
 $users = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM credentials WHERE role !='admin'"))['total'];
