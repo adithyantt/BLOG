@@ -7,4 +7,5 @@ $cats = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $cats[] = $row['category'];
 }
+//fetch category 
 echo json_encode($cats);
