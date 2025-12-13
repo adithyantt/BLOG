@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error updating profile: " . mysqli_error($conn);
     }
 }
+//this is the edit profile 
 ?>
 
 <h1>Edit Profile</h1>
