@@ -13,7 +13,7 @@ $email = isset($_SESSION['signup_data']['email']) ? urlencode($_SESSION['signup_
 $phone = isset($_SESSION['signup_data']['phone']) ? urlencode($_SESSION['signup_data']['phone']) : '';
 $role  = isset($_SESSION['signup_data']['role'])  ? urlencode($_SESSION['signup_data']['role'])  : '';
 
-// Clear only OTP-related sessions
+// Clear only OTP-related sessions //
 unset($_SESSION['pending_email'], $_SESSION['pending_role'], $_SESSION['new_user_signup']);
 
 // Redirect with URL parameters
