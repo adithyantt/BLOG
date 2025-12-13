@@ -2,7 +2,7 @@
 include "config.php";
 session_start();
 
-// ----------------- User login check -----------------
+// ----------------- User login check ---------------
 if (empty($_SESSION['email']) || empty($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
