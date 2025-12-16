@@ -5,6 +5,7 @@ include "config.php";
 session_start();
 
 // Clean output buffer
+cleaned complete 
 ob_clean();
 
 // Check login
