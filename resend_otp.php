@@ -77,4 +77,5 @@ if ($row = mysqli_fetch_assoc($result)) {
     echo "User not found.";
     exit();
 }
+//this is resend otp file
 ?>
