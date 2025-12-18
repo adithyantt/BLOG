@@ -101,7 +101,7 @@ button:hover { background: #0056b3; }
     <?php if($error) echo "<div class='error'>$error</div>"; ?>
     <?php if($success) echo "<div class='success'>$success</div>"; ?>
     <form method="POST">
-        <input type="email" name="email" placeholder="Enter your registered email" required>
+        <input type="email" name="email" placeholder="Enter your given registered email" required>
         <button type="submit">Send OTP</button>
     </form>
 </div>
