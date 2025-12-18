@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-// Only allow if OTP was verified
+// Only allow if OTP was verified user
 if (!isset($_SESSION['reset_email']) || !isset($_SESSION['allow_password_reset']) || $_SESSION['allow_password_reset'] !== true) {
     header("Location: forgot_password.php");
     exit();
