@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 include "config.php";
 session_start();
 
-// Clean output buffer
+// Clean output buffer history 
 cleaned complete 
 ob_clean();
 
