@@ -1,5 +1,5 @@
 <?php
-// admin/review_post.php
+// admin/review_post
 include "../config.php";
 session_start();
 
