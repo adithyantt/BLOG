@@ -6,7 +6,7 @@ if (!isset($_GET['category'])) {
     die("Category not specified");
 }
 
-//this is the category file
+//this is the category setting file
 $category = mysqli_real_escape_string($conn, $_GET['category']);
 
 $result = mysqli_query($conn, "
