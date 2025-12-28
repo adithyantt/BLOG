@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 }
 
-// Fetch notifications
+// Fetch notification
 $query = "SELECT * FROM notifications WHERE user_id = $user_id ORDER BY created_at DESC";
 $result = mysqli_query($conn, $query);
 
