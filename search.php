@@ -9,7 +9,7 @@ if (!isset($_SESSION['email'])) {
 
 $email = $_SESSION['email'];
 
-// Current user info
+// Current user info of users
 $userRes = mysqli_query($conn, "SELECT user_id, uname, profile_img FROM credentials WHERE email='" . mysqli_real_escape_string($conn, $email) . "' LIMIT 1");
 $currentUser = mysqli_fetch_assoc($userRes);
 $current_user_id = $currentUser ? (int)$currentUser['user_id'] : 0;
