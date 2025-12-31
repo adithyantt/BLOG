@@ -19,7 +19,7 @@ if ($q === '') {
 
 $q_esc = mysqli_real_escape_string($conn, $q);
 
-// ✅ Only active users, exclude admin
+// ✅ Only active users, excludes admin
 $sql = "
 SELECT user_id, uname, profile_img, email 
 FROM credentials 
