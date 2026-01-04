@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Update database
+    // Update databases
     $update = "UPDATE credentials SET bio='$bio', profile_img=" . ($profile_img ? "'$profile_img'" : "NULL") . " WHERE email='$email'";
     if (mysqli_query($conn, $update)) {
         header("Location: profile.php");
