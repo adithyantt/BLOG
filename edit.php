@@ -3,7 +3,7 @@
 include "config.php";
 session_start();
 
-// Check if user is logged in
+// Check if user is logged in or
 if (!isset($_SESSION['email'])) {
     header("Location: login.html");
     exit();
