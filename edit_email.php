@@ -7,7 +7,7 @@ if (!isset($_SESSION['signup_data'])) {
     exit();
 }
 
-// Safely extract values with fallback
+// Safely extract values with fallback setting 
 $uname = isset($_SESSION['signup_data']['uname']) ? urlencode($_SESSION['signup_data']['uname']) : '';
 $email = isset($_SESSION['signup_data']['email']) ? urlencode($_SESSION['signup_data']['email']) : '';
 $phone = isset($_SESSION['signup_data']['phone']) ? urlencode($_SESSION['signup_data']['phone']) : '';
