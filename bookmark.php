@@ -1,6 +1,6 @@
 
 <?php
-//this file include the seperate bookmark section
+//this file include the seperate bookmark
 
 include "config.php";
 session_start();
