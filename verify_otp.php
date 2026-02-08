@@ -15,7 +15,7 @@ $error = '';
 if (isset($_POST['verify'])) {
     $input_otp = trim($_POST['otp']);
 
-    // Fetch OTP from DB
+    // Fetch OTP from Db
     $stmt = mysqli_prepare($conn, "SELECT otp_code, otp_expires, user_id, uname, role FROM credentials WHERE email=? LIMIT 1");
     mysqli_stmt_bind_param($stmt, "s", $pending_email);
     mysqli_stmt_execute($stmt);
