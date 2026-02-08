@@ -14,7 +14,7 @@ if (!isset($_SESSION['email'])) {
     exit;
 }
 
-// Read JSON request
+// Read JSON requests
 $data = json_decode(file_get_contents("php://input"), true);
 if (!$data || !isset($data['post_id'])) {
     echo json_encode(["success" => false, "msg" => "Invalid request"]);
