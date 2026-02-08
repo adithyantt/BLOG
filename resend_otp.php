@@ -10,7 +10,7 @@ require 'PHPMailer-6.10.0/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Check if there's a pending email
+// Check if there's a pending emails
 if (!isset($_SESSION['pending_email'])) {
     header("Location: signup.html");
     exit();
