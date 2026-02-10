@@ -36,7 +36,7 @@ $result = mysqli_query($conn, "
       </div>
     <?php endwhile; ?>
   <?php else: ?>
-    <p>No posts found in this category.</p>
+    <p>No posts found in this category.s</p>
   <?php endif; ?>
 </body>
 </html>
