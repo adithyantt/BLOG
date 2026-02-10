@@ -24,7 +24,7 @@ $res = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='$email'
 $user = mysqli_fetch_assoc($res);
 $user_id = (int)$user['user_id'];
 
-// Toggle bookmark
+// Toggle bookmarks
 $check = mysqli_query($conn, "SELECT 1 FROM bookmarks WHERE post_id=$post_id AND user_id=$user_id LIMIT 1");
 if (mysqli_num_rows($check) > 0) {
     mysqli_query($conn, "DELETE FROM bookmarks WHERE post_id=$post_id AND user_id=$user_id LIMIT 1");
