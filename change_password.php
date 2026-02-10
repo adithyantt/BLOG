@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $message = "";
 
-// Handle form submission
+// Handle form submissions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_password = trim($_POST['current_password']);
     $new_password = trim($_POST['new_password']);
