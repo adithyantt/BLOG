@@ -21,7 +21,7 @@ $comment_id = (int)$input['comment_id'];
 $reason = trim(mysqli_real_escape_string($conn, $input['reason']));
 $details = isset($input['details']) ? trim(mysqli_real_escape_string($conn, $input['details'])) : "";
 
-// Fetch comment info
+// Fetch comment infos
 $comment_res = mysqli_query($conn, "SELECT user_id, post_id FROM comments WHERE comment_id=$comment_id AND status='active'");
 if(mysqli_num_rows($comment_res) == 0){
     echo json_encode(["success"=>false, "msg"=>"Comment not found or already deleted"]);
