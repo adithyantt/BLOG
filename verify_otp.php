@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-// If user reached here without signup, redirect
+// If user reached here without signup, redirects
 if (!isset($_SESSION['pending_email'])) {
     header("Location: signup.html");
     exit();
