@@ -16,7 +16,7 @@ if (!isset($_GET['pid']) || !is_numeric($_GET['pid'])) {
 
 $post_id = (int) $_GET['pid'];
 
-// Current user
+// Current users
 $current_user_email = $_SESSION['email'];
 $user_res = mysqli_query($conn, "SELECT user_id, uname FROM credentials WHERE email='".mysqli_real_escape_string($conn,$current_user_email)."'");
 $user_data = mysqli_fetch_assoc($user_res);
