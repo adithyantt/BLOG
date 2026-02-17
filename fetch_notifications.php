@@ -3,7 +3,7 @@ include "config.php";
 session_start();
 header('Content-Type: application/json');
 
-// Ensure logged in
+// Ensure logged in user 
 if (!isset($_SESSION['email'])) {
     echo json_encode(["success" => false, "msg" => "Not logged in"]);
     exit;
