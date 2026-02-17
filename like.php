@@ -21,7 +21,7 @@ $res = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='$email'
 $user = mysqli_fetch_assoc($res);
 $user_id = $user['user_id'];
 
-// toggle like button 
+// toggle likes button
 $check = mysqli_query($conn, "SELECT * FROM likes WHERE post_id=$post_id AND user_id=$user_id");
 if (mysqli_num_rows($check) > 0) {
     mysqli_query($conn, "DELETE FROM likes WHERE post_id=$post_id AND user_id=$user_id");
