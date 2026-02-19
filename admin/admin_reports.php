@@ -17,7 +17,7 @@ if (!$roleRow || $roleRow['role'] !== 'admin') {
     exit();
 }
 
-// Fetch reports with reporter/reported and optional target preview
+// Fetch reports with reporter/reported and optional target previews
 $sql = "
 SELECT r.*, 
        reporter.uname AS reporter_name,
