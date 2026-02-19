@@ -2,7 +2,7 @@
 include "../config.php";
 session_start();
 
-// Only admin can access
+// Only admin can accesses
 if (!isset($_SESSION['role']) || strtolower($_SESSION['role']) !== 'admin') {
     header("Location: ../login.php");
     exit();
