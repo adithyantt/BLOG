@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     // Update status
     mysqli_query($conn, "UPDATE credentials SET status='suspended' WHERE user_id=$id");
 
-    // Insert notification
+    // Insert notifications
     mysqli_query($conn, "INSERT INTO notifications (user_id, message) VALUES ($id, 'Your account has been suspended by admin.')");
 }
 
