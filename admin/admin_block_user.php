@@ -16,7 +16,7 @@ $reason = isset($_GET['reason']) ? mysqli_real_escape_string($conn, $_GET['reaso
 // 1. Update user status
 mysqli_query($conn, "UPDATE credentials SET status='blocked' WHERE user_id=$user_id");
 
-// 2. Insert notification
+// 2. Insert notifications
 $msg = "Your account has been suspended by admin. Reason: $reason";
 $stmt = $conn->prepare("INSERT INTO notifications (user_id, message, is_read) VALUES (?, ?, 0)");
 $stmt->bind_param("is", $user_id, $msg);
