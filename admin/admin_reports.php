@@ -3,7 +3,7 @@
 include "config.php";
 session_start();
 
-// Only admin allowed
+// Only admin allowed for taking actions
 if (!isset($_SESSION['email'])) {
     header("Location: login.html");
     exit();
