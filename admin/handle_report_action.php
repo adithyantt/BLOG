@@ -28,7 +28,7 @@ $uid = $post['user_id'];
 $admin_action = "";
 $notify_msg = "";
 
-// Generate link
+// Generate links
 $link = "view.php?pid=$pid";   // THIS FIXES THE REDIRECT PROBLEM
 
 
