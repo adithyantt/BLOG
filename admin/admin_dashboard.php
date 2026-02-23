@@ -8,7 +8,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     exit();
 }
 
-
+//this is the admin dashboard area
 // Fetch stats
 $users = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM credentials WHERE role !='admin'"))['total'];
 $posts = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM posts"))['total'];
