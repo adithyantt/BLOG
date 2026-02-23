@@ -1,4 +1,5 @@
 <?php
+//this file to send the admins actions
 include "../config.php";
 session_start();
 
