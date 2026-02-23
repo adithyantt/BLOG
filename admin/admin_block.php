@@ -21,7 +21,7 @@ if ($row = mysqli_fetch_assoc($res)) {
     // 2. Update post status
     mysqli_query($conn, "UPDATE posts SET status='blocked' WHERE post_id=$post_id");
 
-    // 3. Insert notifications
+    // 3. Insert notifications in the user side
     $msg = "Your post (ID: $post_id) has been blocked by admin. Reason: $reason";
     $stmt = $conn->prepare("INSERT INTO notifications (user_id, message, is_read) VALUES (?, ?, 0)");
     $stmt->bind_param("is", $author_id, $msg);
