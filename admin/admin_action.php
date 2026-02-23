@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     echo json_encode(["success" => false, "msg" => "Unauthorized"]);
     exit();
 }
-//admin actions
+//admin action
 
 $data = json_decode(file_get_contents("php://input"), true);
 $report_id = (int)($data['report_id'] ?? 0);
