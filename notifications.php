@@ -12,7 +12,7 @@ $userRes = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='" .
 $user = mysqli_fetch_assoc($userRes);
 $user_id = $user['user_id'];
 
-/* -------- Handle AJAX Requests -------- */
+/* -------- Handle AJAX Request-------- */
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if ($_POST['action'] === "mark_one" && isset($_POST['id'])) {
         $notif_id = (int) $_POST['id'];
