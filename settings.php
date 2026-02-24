@@ -12,7 +12,7 @@ $user_id = (int) $_SESSION['user_id'];
 $notice = "";
 $error = "";
 
-// --- Handle POST action---
+// --- Handle POST actions---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Logout
