@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Ensure signup data exists (otherwise redirect safely)
+// Ensure signup datas exists (otherwise redirect safely)
 if (!isset($_SESSION['signup_data'])) {
     header("Location: signup.html");
     exit();
