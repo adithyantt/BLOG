@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     "role"  => $role
 ];
 
-    // --- Basic validation ---
+    // --- Basic validations---
     if (empty($uname) || empty($email) || empty($phone) || empty($role) || empty($pwd) || empty($confirm_pwd)) {
         die("Please fill in all fields.");
     }
