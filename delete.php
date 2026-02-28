@@ -1,5 +1,5 @@
 <?php
-//this is the delete file for deleting the files
+//this is the delete file for deleting the file
 include "config.php";
 session_start();
 
