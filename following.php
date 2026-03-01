@@ -13,7 +13,7 @@ $current_user_query = mysqli_query($conn, "SELECT user_id FROM credentials WHERE
 $current_user_data = mysqli_fetch_assoc($current_user_query);
 $current_user_id = $current_user_data['user_id'];
 
-// Fetch posts from people this user follows
+// Fetch posts from people this user follow
 $sql = "
     SELECT p.*, c.email 
     FROM posts p
