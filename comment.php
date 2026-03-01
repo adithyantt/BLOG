@@ -10,7 +10,7 @@ if (!isset($_SESSION['email'])) {
     exit;
 }
 
-// ✅ Get JSON data
+// ✅ Get JSON datas
 $data = json_decode(file_get_contents("php://input"), true);
 $post_id = isset($data['post_id']) ? (int)$data['post_id'] : 0;
 $comment = isset($data['comment']) ? trim($data['comment']) : "";
