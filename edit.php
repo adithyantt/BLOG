@@ -18,7 +18,7 @@ if (!isset($_GET['pid'])) {
 $pid = $_GET['pid'];
 $email = $_SESSION['email'];
 
-// Validate post ID
+// Validate post IDs
 if (!filter_var($pid, FILTER_VALIDATE_INT)) {
     echo "Invalid post ID.";
     exit();
