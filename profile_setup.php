@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-// Only allow access if user is logged in
+// Only allow access if users is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
