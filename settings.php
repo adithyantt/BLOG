@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-// Require login
+// Requires login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
