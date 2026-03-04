@@ -14,5 +14,5 @@ if (isset($_GET['id'])) {
 
 header("Location: manage_users.php");
 exit();
-//this is user suspending file
+//this is user suspending files
 ?>
