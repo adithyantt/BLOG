@@ -30,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $post_res = mysqli_stmt_get_result($stmt);
 $post = mysqli_fetch_assoc($post_res);
 
-/* ------------ Fetch comments ------------- */
+/* ------------ Fetch comment------------- */
 $com_sql = "
     SELECT c.comment_id, c.comment, c.status, c.created_at, u.uname
     FROM comments c
