@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $message = "";
 
-// Handle password change
+// Handle password changes
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
     $current_password = trim($_POST['current_password']);
     $new_password = trim($_POST['new_password']);
