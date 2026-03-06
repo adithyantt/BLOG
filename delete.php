@@ -11,7 +11,7 @@ if (!isset($_SESSION['email'])) {
 $pid = $_GET['pid'];
 $email = $_SESSION['email'];
 
-// Delete the post if it belongs to the logged-in user
+// Delete the post if it belongs to the logged-in users
 $sql = "DELETE FROM posts 
         WHERE post_id = '$pid' 
         AND user_id = (SELECT user_id FROM credentials WHERE email = '$email')";
