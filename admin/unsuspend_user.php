@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     // Update status
     mysqli_query($conn, "UPDATE credentials SET status='active' WHERE user_id=$id");
 
-    // Insert notifications
+    // Insert notification
     mysqli_query($conn, "INSERT INTO notifications (user_id, message) VALUES ($id, 'Your account has been reactivated by admin.')");
 }
 
