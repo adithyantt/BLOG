@@ -2,7 +2,7 @@
 include "../config.php";
 session_start();
 
-// ✅ Only allow admin/superadmin
+// ✅ Only allow admin/superadmins
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'superadmin')) {
     echo json_encode(["success" => false, "msg" => "Unauthorized"]);
     exit();
