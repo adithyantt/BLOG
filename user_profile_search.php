@@ -16,7 +16,7 @@ $currentUser = mysqli_fetch_assoc($userRes);
 $currentUserName = $currentUser['uname'];
 $currentUserImg = !empty($currentUser['profile_img']) ? $currentUser['profile_img'] : "uploads/default_profile.png";
 
-// Get UID from URL
+// Get UID from URLs
 $uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 if ($uid <= 0) die("<h2 style='text-align:center;margin-top:50px;'>Invalid user.</h2>");
 
