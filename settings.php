@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Deactivate or Delete
+    // Deactivate or Deletes
     if (isset($_POST['account_action']) && in_array($_POST['account_action'], ['deactivate', 'delete'])) {
         $password = trim($_POST['password']);
 
