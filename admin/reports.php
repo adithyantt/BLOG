@@ -8,7 +8,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     exit();
 }
 
-// Fetch all reports
+// Fetch all report
 $sql = "
     SELECT r.*,
            u.uname AS reporter_name,
