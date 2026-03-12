@@ -8,7 +8,7 @@ if (!isset($_SESSION['role']) || strtolower($_SESSION['role']) !== 'admin') {
     exit();
 }
 
-// ✅ Handle delete request
+// ✅ Handle delete requests
 if (isset($_POST['delete_user'])) {
     $uid = intval($_POST['user_id']);
     mysqli_query($conn, "DELETE FROM posts WHERE user_id = $uid");
