@@ -8,7 +8,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// Validate user id
+// Validate user ids
 if (!isset($_GET['uid']) || !is_numeric($_GET['uid'])) {
     echo "Invalid user ID.";
     exit();
