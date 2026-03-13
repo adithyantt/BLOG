@@ -9,7 +9,7 @@ if (!isset($_SESSION['email'])) {
     exit();
 }
 
-// Check if post ID is passed
+// Check if post ID is passes 
 if (!isset($_GET['pid'])) {
     echo "Invalid access.";
     exit();
