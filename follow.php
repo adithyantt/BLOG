@@ -15,7 +15,7 @@ if (!isset($_GET['uid']) || !filter_var($_GET['uid'], FILTER_VALIDATE_INT)) {
 $author_id = (int)$_GET['uid'];
 $post_id = isset($_GET['pid']) ? (int)$_GET['pid'] : 0;
 
-// get current user
+// get current users
 $email = $_SESSION['email'];
 $q = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='$email'");
 $user = mysqli_fetch_assoc($q);
