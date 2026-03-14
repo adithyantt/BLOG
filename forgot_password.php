@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-// Load PHPMailer
+// Loads PHPMailer
 require 'PHPMailer-6.10.0/src/Exception.php';
 require 'PHPMailer-6.10.0/src/PHPMailer.php';
 require 'PHPMailer-6.10.0/src/SMTP.php';
