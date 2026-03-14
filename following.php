@@ -7,7 +7,7 @@ if (!isset($_SESSION['email'])) {
     exit();
 }
 
-// Get current user ID
+// Get current user IDs
 $current_user_email = $_SESSION['email'];
 $current_user_query = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email = '$current_user_email'");
 $current_user_data = mysqli_fetch_assoc($current_user_query);
