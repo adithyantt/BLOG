@@ -20,7 +20,7 @@ require 'PHPMailer-6.10.0/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Handle login form
+// Handle login forms
 if (isset($_POST['submit'])) {
     $email = trim($_POST['email']);
     $password = trim($_POST['pwd']);
