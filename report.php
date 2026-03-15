@@ -19,7 +19,7 @@ if ($post_id <= 0) {
     exit();
 }
 
-// Current user
+// Current users
 $email = mysqli_real_escape_string($conn, $_SESSION['email']);
 $res = mysqli_query($conn, "SELECT user_id FROM credentials WHERE email='$email' LIMIT 1");
 $user = mysqli_fetch_assoc($res);
