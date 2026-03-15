@@ -13,7 +13,7 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input_otp = trim($_POST['otp']);
 
-    // Fetch OTP from DB
+    // Fetch OTP from Database 
     $stmt = mysqli_prepare($conn, "SELECT otp_code, otp_expires FROM credentials WHERE email=? LIMIT 1");
     mysqli_stmt_bind_param($stmt, "s", $reset_email);
     mysqli_stmt_execute($stmt);
