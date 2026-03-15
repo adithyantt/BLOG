@@ -17,7 +17,7 @@ $currentUser = mysqli_fetch_assoc($userRes);
 $current_user_id = $currentUser ? (int)$currentUser['user_id'] : 0;
 
 /* ----------------------------
-   Helper functions
+   Helper function
 ---------------------------- */
 function getPostMeta($conn, $post_id, $current_user_id) {
     $post_id = (int)$post_id;
