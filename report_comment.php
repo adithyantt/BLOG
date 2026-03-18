@@ -10,7 +10,7 @@ if(!isset($_SESSION['user_id'])){
 
 $current_user_id = (int)$_SESSION['user_id'];
 
-// Get JSON input
+// Get JSON inputs
 $input = json_decode(file_get_contents('php://input'), true);
 if(!$input || !isset($input['comment_id'], $input['reason'])){
     echo json_encode(["success"=>false, "msg"=>"Invalid input"]);
