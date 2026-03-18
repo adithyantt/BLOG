@@ -19,7 +19,7 @@ echo "<img src='" . (!empty($user['profile_img']) ? htmlspecialchars($user['prof
 echo "<p><b>Email:</b> " . htmlspecialchars($user['email']) . "</p>";
 echo "<p><b>Bio:</b> " . (!empty($user['bio']) ? htmlspecialchars($user['bio']) : 'No bio yet.') . "</p>";
 
-// Show this user's posts
+// Show this user's post
 $res = mysqli_query($conn, "SELECT * FROM posts WHERE user_id=$uid ORDER BY created_at DESC");
 if ($res && mysqli_num_rows($res) > 0) {
     echo "<h3>Posts:</h3>";
