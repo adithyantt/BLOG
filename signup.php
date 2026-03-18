@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_pwd = $_POST['confirm_password'];
     $admin_code  = isset($_POST['admin_code']) ? trim($_POST['admin_code']) : '';
 
-    // Store signup data for editing email later
+    // Store signup data for editing emails later
     $_SESSION['signup_data'] = [
     "uname" => $uname,
     "email" => $email,
