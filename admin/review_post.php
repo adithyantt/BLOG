@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || strtolower($_SESSION['role']) !== 'admin') {
     exit();
 }
 
-// Validate post id
+// Validate post ids
 if (!isset($_GET['pid']) || !ctype_digit($_GET['pid'])) {
     echo "Invalid Post ID.";
     exit();
